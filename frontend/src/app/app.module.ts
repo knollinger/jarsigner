@@ -14,6 +14,9 @@ import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { FileSizePipe } from './pipes/file-size.pipe';
 import { DropTargetDirective } from './directives/drop-target.directive';
@@ -24,6 +27,8 @@ import { MessageBoxComponent } from './components/message-box/message-box.compon
 
 import { SpinnerInterceptor } from './interceptors/spinner.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { LoginComponent } from './components/login/login.component';
+import { AutoFocusDirective } from './directives/auto-focus.directive';
 
 @NgModule({
   declarations: [
@@ -34,6 +39,8 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
     SignerComponent,
     SpinnerComponent,
     MessageBoxComponent,
+    LoginComponent,
+    AutoFocusDirective,
   ],
   imports: [
     BrowserModule,
@@ -46,7 +53,11 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
     MatButtonModule,
     MatTooltipModule,
     MatProgressSpinnerModule,
-    MatDialogModule
+    MatInputModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   exports: [
     HttpClientModule,

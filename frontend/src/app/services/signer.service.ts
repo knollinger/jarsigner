@@ -23,6 +23,8 @@ export class SignerService {
   /**
    * 
    * @param backendRouter 
+   * @param httpClient 
+   * @param spinner 
    */
   constructor(
     private backendRouter: BackendRoutingService,
@@ -50,7 +52,6 @@ export class SignerService {
     const url = this.backendRouter.getRouteForName('signJars', SignerService.routes);
 
     const form = new FormData();
-    // form.append('versionId', versionId);
     files.forEach(file => {
       form.append('file', file);
     });

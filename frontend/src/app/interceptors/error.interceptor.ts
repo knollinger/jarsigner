@@ -30,30 +30,6 @@ export class ErrorInterceptor implements HttpInterceptor {
   public static spinnerSvc: SpinnerService | undefined = undefined;
 
   /**
-   * Die Konfiguration für den retry()-Operator.
-   * 
-   * Wenn die Netzwerk-Verbindung weg sein sollte, so wird endlos versucht den
-   * letzten Request zu wiederholen.
-   * 
-   * Alle anderen Fehler (Http-Statuscode !== 0) werden im catchError behandelt.
-   */
-  private readonly retryConfig = {
-    count: 10, // max 10 retries!
-    resetOnSuccess:  false,
-    delay: function(error: HttpErrorResponse, retryAttempt: number): Observable<number> {
-
-      if (error.status !== 0) {
-        return throwError(() => error);
-      }
-
-      if(ErrorInterceptor.spinnerSvc) {
-        ErrorInterceptor.spinnerSvc.setMessage('Netzwerk-Verbindung verloren. Verbinde neu...')
-      }
-      return timer(1000);
-    }
-  }
-   
-  /**
    *
    */
   constructor(
@@ -74,7 +50,6 @@ export class ErrorInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     return next.handle(req).pipe(
-      // retry(this.retryConfig),
       catchError((err: any) => {
 
         const msg = this.extractErrorMessage(err);
