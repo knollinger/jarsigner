@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
@@ -25,6 +25,7 @@ export class LoginComponent implements OnInit {
    */
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private sessionSvc: SessionService,
     formBuilder: FormBuilder) {
 
@@ -52,7 +53,8 @@ export class LoginComponent implements OnInit {
 
     const req = LoginRequest.fromJSON(this.loginForm.value);
     this.sessionSvc.login(req).subscribe(x => {
-      alert(JSON.stringify(x));
+      console.log(x);
+      this.router.navigateByUrl(this.redirUrl);
     })
   }
 }

@@ -4,6 +4,7 @@ import { Observable, catchError, throwError, timer, retry } from 'rxjs';
 
 import { MessageBoxService } from '../services/message-box.service';
 import { SpinnerService } from '../services/spinner.service';
+import { Router } from '@angular/router';
 
 /**
  * Der Error-Interceptor springt bei allen HttpErrorResponses an und zeigt
@@ -33,10 +34,11 @@ export class ErrorInterceptor implements HttpInterceptor {
    *
    */
   constructor(
+    private router: Router,
     private spinnerSvc: SpinnerService,
     private msgService: MessageBoxService) {
 
-      ErrorInterceptor.spinnerSvc = this.spinnerSvc;
+    ErrorInterceptor.spinnerSvc = this.spinnerSvc;
   }
 
   /**
@@ -51,6 +53,10 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     return next.handle(req).pipe(
       catchError((err: any) => {
+
+        if (err.status === 401) {
+          this.router.navigateByUrl('/login');
+        }
 
         const msg = this.extractErrorMessage(err);
         this.msgService.showErrorBox('Fehler beim Zugriff auf den Server', msg);
@@ -69,7 +75,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     if (err.message && err.error.message) {
       return err.error.message;
     }
-    if(err.status === 0) {
+    if (err.status === 0) {
       return 'Die Verbindung mit dem Server konnte nicht hergestellt werden.';
     }
     return `Der Server antwortete mit dem Status-Code ${err.status}\n${err.statusText}`;
