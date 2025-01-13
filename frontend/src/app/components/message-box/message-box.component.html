@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+
+<mat-icon class="material-symbols-outlined" color="primary" *ngIf="data.type=='info'">info</mat-icon>
+<mat-icon class="material-symbols-outlined" color="primary" *ngIf="data.type=='query'">help</mat-icon>
+<mat-icon class="material-symbols-outlined" color="error" *ngIf="data.type=='error'">error</mat-icon>
+
+<div mat-dialog-content>
+  <div class="middle-top-spacer" [innerHtml]="data.msg"></div>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-flat-button color="primary" [mat-dialog-close]="true" *ngIf="data.type=='info' || data.type=='error'"
+    appAutoFocus>Ok</button>
+  <button mat-flat-button color="primary" [mat-dialog-close]="true" *ngIf="data.type=='query'" appAutoFocus>Ja</button>
+  <button mat-flat-button [mat-dialog-close]="false" *ngIf="data.type=='query'">Nein</button>
+</div>

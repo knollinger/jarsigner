@@ -1,0 +1,16 @@
+<div class="full-height pos-relative scrollable disp-flex flex-col">
+    
+    <app-file-selector class="flex-1" (selected)="onFilesChange($event)">
+    </app-file-selector>
+    
+    <div class="flex-0 footer">
+        {{files.length}} Files mit {{totalSize | fileSize}}
+    </div>
+    
+    <button mat-fab color="primary" class="sign_btn" *ngIf="files.length" matTooltip="Alle Dateien signieren" (click)="onSignJars(downloadLink)">
+        <mat-icon class="material-symbols-outlined">signature</mat-icon>
+    </button>
+
+    <a class="hidden" [href]="downloadUrl" #downloadLink>{{downloadUrl}}</a>
+</div>
+

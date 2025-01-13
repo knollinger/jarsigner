@@ -1,0 +1,22 @@
+:host {
+    overflow: auto;
+}
+
+.toolbar {
+    padding: 0.5rem;
+    border-bottom: 1px solid #d0d0d0;
+}
+
+.toolbar>button {
+    color: #333;
+}
+
+.empty-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: xxx-large;
+    color: #d0d0d0;
+    white-space: nowrap;
+}

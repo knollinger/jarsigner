@@ -1,0 +1,39 @@
+<div class="scrollable full-height disp-flex flex-col">
+
+    <!-- Die Toolbar -->
+    <div class="toolbar">
+
+        <button mat-icon-button matTooltip="Dateien zum signieren hinzu fügen."
+            (click)="fileSelector.click()">
+            <mat-icon class="material-symbols-outlined">attach_file_add</mat-icon>
+        </button>
+        <input type="file" class="hidden" multiple="true" #fileSelector (change)="onFilesSelected($event)">
+        
+        <button mat-icon-button matTooltip="Alle Dateien auswählen" *ngIf="isShowSelectAll" (click)="onSelectAll()">
+            <mat-icon class="material-symbols-outlined">check_box</mat-icon>
+        </button>
+
+        <button mat-icon-button matTooltip="Auswahl aufheben" *ngIf="isShowDeselectAll" (click)="onDeselectAll()">
+            <mat-icon class="material-symbols-outlined">check_box_outline_blank</mat-icon>
+        </button>
+
+        
+        <button mat-icon-button matTooltip="ausgewählte Files löschen" *ngIf="isShowDelete" (click)="onDelete()">
+            <mat-icon class="material-symbols-outlined">delete</mat-icon>
+        </button>
+    </div>
+
+    <div class="scrollable flex-1" appDropTarget (filesDropped)="onFilesDropped($event)">
+
+        <div class="empty-label" *ngIf="files.length === 0">Drop files here</div>
+
+        <mat-selection-list *ngIf="files.length > 0" (selectionChange)="onSelectionChange($event)">
+            <mat-list-option color="primary" checkboxPosition="before" *ngFor="let file of files" [value]="file" [selected]="isSelected(file)">
+                <div class="disp-flex flex-row flex-alignitems-center">
+                    <span class="flex-1">{{file.name}}</span>
+                    <span class="flex-0">{{file.size | fileSize}}</span>
+                </div>
+            </mat-list-option>
+        </mat-selection-list>
+    </div>
+</div>
