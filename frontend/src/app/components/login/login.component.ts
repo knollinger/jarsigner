@@ -5,6 +5,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 
 import { ILoginRequest, LoginRequest } from '../../models/login.request';
 import { SessionService } from '../../services/session.service';
+import { TitlebarService } from '../../services/titlebar.service';
 
 /**
  * 
@@ -27,6 +28,7 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private sessionSvc: SessionService,
+    private titlebarSvc: TitlebarService,
     formBuilder: FormBuilder) {
 
     this.loginForm = formBuilder.group({
@@ -34,6 +36,8 @@ export class LoginComponent implements OnInit {
       password: new FormControl('', [Validators.required])
     });
     this.loginForm.markAllAsTouched();
+
+    this.titlebarSvc.subTitle = 'Anmeldung';
   }
 
   /**

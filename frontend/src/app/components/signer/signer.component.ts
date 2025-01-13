@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SignerService } from '../../services/signer.service';
+import { TitlebarService } from '../../services/titlebar.service';
 import { MessageBoxService } from '../../services/message-box.service';
 import { JarError } from '../../models/sign-jar-response';
 
@@ -17,6 +18,7 @@ export class SignerComponent implements OnInit {
 
   constructor(
     private signerSvc: SignerService,
+    private titlebarSvc: TitlebarService,
     private msgBoxSvc: MessageBoxService) { 
 
   }
@@ -25,6 +27,7 @@ export class SignerComponent implements OnInit {
    * 
    */
   ngOnInit(): void {
+    this.titlebarSvc.subTitle = 'Datei-Auswahl';
   }
 
   /**
