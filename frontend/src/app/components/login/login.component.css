@@ -1,6 +1,7 @@
 form {
     position: relative;
     width: 50%;
+    max-width: 400px;
     left: 50%;
     top: 5rem;
     transform: translateX(-50%);
