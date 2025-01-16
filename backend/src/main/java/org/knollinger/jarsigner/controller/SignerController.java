@@ -24,11 +24,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import lombok.extern.log4j.Log4j2;
+
 /**
  * 
  */
 @RestController
 @RequestMapping(path = "v1/signer")
+@Log4j2
 public class SignerController
 {
     private static final String ERR_TASK_NOT_FOUND = "Kein Signatur-Task mit der ID '%1$s' gefunden.";
@@ -59,6 +62,7 @@ public class SignerController
         }
         catch (Exception e)
         {
+            log.throwing(e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                 "Die JAR-Files konnten nicht signiert werden", e);
         }

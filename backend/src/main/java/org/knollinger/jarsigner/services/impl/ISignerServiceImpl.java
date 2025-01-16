@@ -110,7 +110,7 @@ public class ISignerServiceImpl implements ISignerService
                 PasswordProtection aliasPwd = new PasswordProtection(this.keystoreAliasPwd);
                 PrivateKeyEntry pke = (PrivateKeyEntry) store.getEntry(this.keystoreAlias, aliasPwd);
                 this.signer = new JarSigner.Builder(pke) //
-                    // .signatureAlgorithm("SHA256") //
+//                    .signatureAlgorithm("SHA-256") //
                     .build();
             }
         }

@@ -33,7 +33,7 @@ public class JarSignerApplication
             public void addCorsMappings(CorsRegistry registry)
             {
                 registry.addMapping("/**") //
-                    .allowedOriginPatterns("*") //
+                    .allowedOriginPatterns("**") //
                     .allowCredentials(true) //
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD");
             }
