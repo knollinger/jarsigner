@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import org.knollinger.jarsigner.models.SignerResponse;
 import org.knollinger.jarsigner.services.ISignerService;
+import org.knollinger.jarsigner.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -84,14 +85,11 @@ public class ISignerServiceImpl implements ISignerService
         File[] allFiles = workingDir.listFiles();
         for (File file : allFiles)
         {
-            if (file.isFile()) // neue IOUtils sollen auch Dirs löschen
+            long age = System.currentTimeMillis() - file.lastModified();
+            if (age >= this.maxTaskAge)
             {
-                long age = System.currentTimeMillis() - file.lastModified();
-                if (age >= this.maxTaskAge)
-                {
-                    log.info("delete outdated archive '{}'", file.getName());
-                    file.delete();
-                }
+                log.info("delete outdated archive '{}'", file.getName());
+                FileUtils.delete(file);
             }
         }
     }
