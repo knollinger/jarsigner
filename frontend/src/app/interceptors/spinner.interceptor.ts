@@ -8,6 +8,18 @@ import {
 import { Observable, finalize } from 'rxjs';
 import { SpinnerService } from '../services/spinner.service';
 
+/**
+ * Der **SpinnerInterceptor** füht einfach mit Hilfe des
+ * **SpinnerService** Buch über alle laufenden HTTP-Requests.
+ * 
+ * Bei einem Start eines Requests incrementiert er am 
+ * **SpinnerService** die ANzahl offener Requests, beim Ende
+ * eines Requests decrementiert er diese Anzahl.
+ * 
+ * Sinn und Zweck des ganzen ist es, die **SpinnerComponent*
+ * zu aktivieren/deaktivieren.
+ * 
+ */
 @Injectable()
 export class SpinnerInterceptor implements HttpInterceptor {
 
@@ -22,7 +34,9 @@ export class SpinnerInterceptor implements HttpInterceptor {
   }
 
   /**
-   *
+   * Grätsche in einen HTTP-Request rein und versorge den 
+   * **SpinnerService** mit der Info über laufende Requests.
+   * 
    * @param request der HTTP-Request
    * @param next der nächste Interceptor
    */

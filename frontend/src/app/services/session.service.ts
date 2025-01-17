@@ -8,7 +8,10 @@ import { ILoginResponse, LoginResponse } from '../models/login.response';
 import { BackendRoutingService } from './backend-routing.service';
 
 
-
+/**
+ * Noch Spiel-Kram. Eigentlich muss bei einem Code-Signer ein Login 
+ * zwingend her, aber aktuell hab ich da keine Lust drauf.
+ */
 @Injectable({
     providedIn: 'root'
 })

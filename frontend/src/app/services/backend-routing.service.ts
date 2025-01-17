@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 
+/**
+ * Löst die Routen zum Backend auf
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +21,29 @@ export class BackendRoutingService {
   }
 
   /**
-   *
+   * Nimmt anhand des Routen-Namens einen EIntrag aus der Routes-Map und
+   * löst alle darin gegebenen Parameter-Placeholder durch die entsprechenden
+   * URL-encodierten Werte aus der args-Liste auf.
+   * 
+   * Die Placeholder sind in der Form {index-in-das-arg-array} zu annotieren, 
+   * der Index ist hierbei 1-basierend! 
+   * 
+   * Also {1} meinst also den ersten Parameter im args-array, {2} den 
+   * zweiten...
+   * 
+   * Die Basis-URL des Requests wird von der aktuellen Lokation der AngularUI
+   * abgeleitet. Es wird also davon aus gegangen, das Backend und Frontend vom
+   * selben Host aus bedient werden.
+   * 
+   * In einer Entwicklungs-Umgebung läuft der Angular-DevServer auf localhost:4200,
+   * das Backend auf localhost:8080
+   * 
+   * In Prod laufen wahrscheinlich beide auf <irgend-ein-host>:443. Der ctor 
+   * sollte hat die entsprechenden Werte bereits ermittelt.
+   * 
+   * Über diese Design-Entscheidung kann und sollte noch einmal auf das 
+   * heftigste gestritten werden! :-)
+   *  
    * @param name
    * @param routes
    * @param args

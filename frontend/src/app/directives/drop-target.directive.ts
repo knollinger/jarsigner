@@ -1,6 +1,16 @@
 import { Directive, EventEmitter, HostBinding, HostListener, Output } from '@angular/core';
 
-
+/**
+ * Eine Direktive, welche dem damit annotierten HTMLElement folgende
+ * Eigenschafften zuweist:
+ * 
+ * * Das Element wird als Ziel einer Drop-Operation enabled
+ * * Um dies zu visualisieren wird eine Border von 3px um das Element gelegt.
+ * * Diese border ist im Normalfall transparent, sobald ein Drag erfolgt wird die
+ *   Border auf dashed mit der Farbe #d0d0d0 gesetzt.
+ * * Bei einem Drop löst die Direktive das Event **filesDropped** aus, als Parameter
+ *   des Events wird ein Array von *File*-Objekten übergeben.
+ */
 @Directive({
   selector: '[appDropTarget]'
 })
@@ -39,7 +49,10 @@ export class DropTargetDirective {
   }
 
   /**
-   *
+   * EIn Drop ist aufgetreten. Packe alle File-Objekte
+   * aus dem Drop in ein File-Array und funke dieses Array 
+   * als Event nach draußen.
+   * 
    * @param event
    */
   @HostListener('drop', ['$event'])
@@ -64,10 +77,6 @@ export class DropTargetDirective {
         }
       }
       dataTransfer.items.clear();
-    }
-    else {
-      const files = dataTransfer.files;
-      dataTransfer.clearData();
     }
     this.filesDropped.emit(files);
   }

@@ -1,5 +1,14 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+/**
+ * Eine Pipe, welche einen numerischen Wert in eine menschenlesbare
+ * Form für Dateigrößen überführt.
+ * 
+ * Statt 1024 Bytes wird also '1 KB' ausgespuckt, statt 1258291,2 Bytes
+ * wird 1.3 MB ausgespuckt.
+ * 
+ * EIn bisserl wird hin und her gerundet.
+ */
 @Pipe({
   name: 'fileSize'
 })

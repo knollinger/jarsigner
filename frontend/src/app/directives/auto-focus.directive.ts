@@ -1,8 +1,11 @@
 import { AfterContentInit, Directive, ElementRef } from '@angular/core';
 
 /**
- * Eine Direktive, welche den Focus aus die damit beglückte 
- * Kopmponent setzt.
+ * Eine Direktive, welche den Focus aus das damit beglückte 
+ * HTMLElement setzt.
+ * 
+ * Sollten mehrere Element damit versorgt sein, so ist das Verhalten
+ * undefiniert...irgend ein Element "gewinnt".
  * 
  */
 @Directive({
@@ -20,7 +23,7 @@ export class AutoFocusDirective implements AfterContentInit {
   }
 
   /**
-   * Nach erzeigen den Contents wird der Focus gesetzt. Um das ganze ein
+   * Nach erzeugen den Contents wird der Focus gesetzt. Um das ganze ein
    * wenig zu entzerren wird dies asynch mit einem Delay von 10ms
    * durchgeführt.
    */

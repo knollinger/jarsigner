@@ -3,6 +3,11 @@ import { Observable } from 'rxjs';
 import { MessageBoxComponent } from '../components/message-box/message-box.component';
 import { MatDialog } from '@angular/material/dialog';
 
+/**
+ * Zeigt einen MessageBox-Dialog in den verschiedenen Ausprägungen an.
+ * 
+ * 
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -60,7 +65,7 @@ export class MessageBoxService {
 
     const dialogRef = this.messageBox.open(MessageBoxComponent, {
       width: '80%',
-      maxWidth: '800px',
+      maxWidth: '600px',
       data: {
         title: msgTitle,
         msg: msg,

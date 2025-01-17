@@ -7,7 +7,10 @@ import { BackendRoutingService } from './backend-routing.service';
 import { SpinnerService } from './spinner.service';
 import { SignJarsResponse } from '../models/sign-jar-response';
 
-
+/**
+ * Die Schnitstelle zum JAR-Signatur-API des Backends.
+ * 
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -34,9 +37,12 @@ export class SignerService {
   }
 
   /**
+   * Liefere die Download-Url eines erfolgreichen Signatur-Vorgangs.
+   *
+   * @param taskId Die TaskId kann aus dem SignJarsResponse-Objekt
+   *               aus dem Aufruf von **signFiles** entnommen werden
    * 
-   * @param taskId 
-   * @returns 
+   * @returns Die Download-URL
    */
   public getTaskResultUrl(taskId: string): string {
 
@@ -44,8 +50,23 @@ export class SignerService {
   }
 
   /**
-   *
-   * @param files
+   * Übergebe ein Array von *File*-Objekten zur signatur durch das Backend.
+   * 
+   * Das ganze ist ein wenig speziell:
+   * 
+   * * Die Files werden in einem Stück als Multipart-Request hoch geladen
+   * * Da es ein länger laufende Http-Request ist, springt der 
+   * **SpinnerInterceptor** an und zeigt einen Infinite-Spinner an
+   * * Ich will zwingend den Fortschritt des Uploads sehen, deswegen wird
+   *   reqortProgess aus true gestellt.
+   * * Der Progress selbst wird mittels dem SpinnerService visualisiert.
+   * * Um Upload-Errors brauchen wir uns hier nicht kümmern, der **ErrorInterceptor**
+   *   übernimmt das.
+   * 
+   * @param files die Jars zum signieren
+   * 
+   * @returns ein Observable auf ein SignJarsResponse-Objekt. Dieses
+   *          liefert dann das Ergebniss des Signatur-Vorgangs.
    */
   public signFiles(files: File[]): Observable<SignJarsResponse> {
 
@@ -72,7 +93,7 @@ export class SignerService {
 
 
   /**
-   *
+   * 
    * @param event handleHttpUploadEvent
    * @param file
    * @returns

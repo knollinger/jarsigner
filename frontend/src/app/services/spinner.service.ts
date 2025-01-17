@@ -3,7 +3,10 @@ import { BehaviorSubject } from 'rxjs';
 
 /**
  * Der Service dient als Singleton, um die Anzahl offener HTTP-Requests
- * zwischen dem SpinnerInterceptor und der SPinnerComponent zu teilen.
+ * zwischen dem SpinnerInterceptor und der SpinnerComponent zu teilen.
+ * 
+ * Desweiteren kann ein MessageText übergeben werden, dieser wird bei 
+ * angezeigtem Spinner angezeigt.
  */
 @Injectable({
   providedIn: 'root'
@@ -39,6 +42,7 @@ export class SpinnerService {
     if (this.pendingRequests > 0) {
       this.pendingRequests--;
     }
+    
     if(this.pendingRequests == 0) {
       this.setMessage('');
     }

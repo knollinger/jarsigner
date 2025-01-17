@@ -3,48 +3,38 @@ import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse
 import { Observable, catchError, throwError, timer, retry } from 'rxjs';
 
 import { MessageBoxService } from '../services/message-box.service';
-import { SpinnerService } from '../services/spinner.service';
 import { Router } from '@angular/router';
 
 /**
  * Der Error-Interceptor springt bei allen HttpErrorResponses an und zeigt
- * den Fehler als Snackbar an. Dazu muss im Body ein JSONObject mit
- * folgenden Werten geliefert werden:
- * <pre>
- * {
- *     message: Die anzuzeigende message
- * }
- * </pre>
-*/
+ * einen Fehler mittels des **MessageBoxService** an. 
+ * 
+ * Wenn im Bodx ein JSON-Objekt mit der eigenschafft "message" geliefert wird, 
+ * so wird diese angezeigt. Anderenfalls generiert der Interceptor eine mehr
+ * oder weniger schöne Meldung mit dem HTTP-Statuscode.
+ * 
+ * Sollte der HTTP-Status auf eine fehlende Authentifizierung hin weisen (HTTP 401)
+ * sor wird auf die Login-Page redirected.
+ * 
+ * Keinesfalls kommt die Error-Situation beim Aufrufer des Angular-HTTPClients an. 
+ * Dort kann also immer vom alles-ist-prima-Fall ausgegangen werden. Im Fall des
+ * Falles kommt halt aus dem HTTP-Client keine Antwort :-)
+ * 
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class ErrorInterceptor implements HttpInterceptor {
 
   /**
-   * Wir brauchen hier leider eine statische Referenz, da diese aus der
-   * delay()-Funktion der retryConfig gerufen werden muss.
-   * 
-   * delay() wird aber asynchron verwendet, der this-Pointer ist in diesem
-   * Kontext nicht gesetzt.
-   */
-  public static spinnerSvc: SpinnerService | undefined = undefined;
-
-  /**
    *
    */
   constructor(
     private router: Router,
-    private spinnerSvc: SpinnerService,
     private msgService: MessageBoxService) {
-
-    ErrorInterceptor.spinnerSvc = this.spinnerSvc;
   }
 
   /**
-   * Der interceptor. Sollte ein HTTP-Fehler diagnostiziert werden, so wird dieser
-   * als BottomSheet angezeigt. Falls in der ErrorMessage  ein JSON-Objekt mit
-   * einem Member "message" existieren, so wird diese Meldung angezeigt.
    *
    * @param req der HttpRequest
    * @param next der nächste HttpHandler
