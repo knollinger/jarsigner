@@ -15,6 +15,14 @@ export class LoginRequest {
         return new LoginRequest(json.user, json.password);
     }
 
+    public static empty(): LoginRequest {
+        return new LoginRequest('', '');
+    }
+
+    public get isEmpty(): boolean {
+        return this.user === '';
+    }
+    
     public toJSON(): ILoginRequest {
         return {
             user: this.user,
@@ -22,7 +30,7 @@ export class LoginRequest {
         }
     }
 
-    public istValid(): boolean {
+    public isValid(): boolean {
         return this.user !== '' && this.password !== '';
     }
 }

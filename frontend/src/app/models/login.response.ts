@@ -12,4 +12,12 @@ export class LoginResponse {
     public static fromJSON(json: ILoginResponse): LoginResponse {
         return new LoginResponse(json.token);
     }
+
+    public static empty(): LoginResponse {
+        return new LoginResponse('');
+    }
+
+    public get isEmpty(): boolean {
+        return this.token === '';
+    }
 }

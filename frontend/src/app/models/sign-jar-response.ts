@@ -52,4 +52,25 @@ export class SignJarsResponse {
         })
         return new SignJarsResponse(json.taskId, errors);
     }
+
+    /**
+     * Erzeuge eine leere SignJarsResponse.
+     * 
+     * Über Sinn und Zweck an dieser Stelle lässt sich trefflich streiten, 
+     * aber alle Models sollten auch in der Lage sein eine leere Instanz zu
+     * erzeugen. Das erpart an vielen Stellen blöde Abfragen auf 
+     * null/undefined und auch die excessive Benutzung des !-Postfix-Operators.
+     * 
+     * @returns EIne leere Instanz der SignJarsResponse.
+     */
+    public static empty(): SignJarsResponse {
+        return new SignJarsResponse('', new Array<JarError>(0));
+    }
+
+    /**
+     * Teste, ob es sich um eine leere Instanz handelt.
+     */
+    public get isEmpty(): boolean {
+        return this.taskId === '';
+    }
 }
