@@ -1,3 +1,6 @@
+/**
+ * Definiert das JSON um einen LoginRequest zu beschreiben
+ */
 export interface ILoginRequest {
     user: string,
     password: string

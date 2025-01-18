@@ -24,7 +24,7 @@ export class AutoFocusDirective implements AfterContentInit {
 
   /**
    * Nach erzeugen den Contents wird der Focus gesetzt. Um das ganze ein
-   * wenig zu entzerren wird dies asynch mit einem Delay von 10ms
+   * wenig zu entzerren wird dies async mit einem Delay von 10ms
    * durchgeführt.
    */
   public ngAfterContentInit() {

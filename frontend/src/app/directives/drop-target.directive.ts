@@ -28,6 +28,7 @@ export class DropTargetDirective {
    * @param el die ElementReferenz auf das mit der Direktive versehene Element
    */
   constructor() {
+
   }
 
   /**
@@ -37,7 +38,7 @@ export class DropTargetDirective {
   onDragOver(evt: DragEvent) {
     evt.stopPropagation();
     evt.preventDefault();
-    this.color = '#d0d0d0';
+    this.showDropAreaVisualisization();
   }
 
   /**
@@ -45,7 +46,7 @@ export class DropTargetDirective {
    */
   @HostListener('dragleave', ['$event'])
   onDragLeave(evt: DragEvent) {
-    this.color = 'transparent';
+    this.clearDropAreaVisualisization();
   }
 
   /**
@@ -60,7 +61,8 @@ export class DropTargetDirective {
 
     evt.stopPropagation();
     evt.preventDefault();
-    this.color = 'transparent';
+
+    this.clearDropAreaVisualisization();
     const dataTransfer: DataTransfer = evt.dataTransfer!;
 
     const files: File[] = new Array<File>();
@@ -79,5 +81,19 @@ export class DropTargetDirective {
       dataTransfer.items.clear();
     }
     this.filesDropped.emit(files);
+  }
+
+  /**
+   * Zeige die Visualisierung der DropArea an
+   */
+  private showDropAreaVisualisization() {
+    this.color = "#d0d0d0";
+  }
+
+  /**
+   * Entferne die Visualisierung der DropArea
+   */
+  private clearDropAreaVisualisization() {
+    this.color = 'transparent';
   }
 }

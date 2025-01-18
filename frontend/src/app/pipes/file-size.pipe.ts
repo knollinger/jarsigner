@@ -5,9 +5,14 @@ import { Pipe, PipeTransform } from '@angular/core';
  * Form für Dateigrößen überführt.
  * 
  * Statt 1024 Bytes wird also '1 KB' ausgespuckt, statt 1258291,2 Bytes
- * wird 1.3 MB ausgespuckt.
+ * wird 1.30 MB ausgespuckt.
  * 
- * EIn bisserl wird hin und her gerundet.
+ * Die maximale Einheit sind Exabytes. Wenn die Länge größer wird, so
+ * wird eine weitere down-skalierung abgebrochen, dann kommen halt 
+ * 2978 EB zurück :-)
+ * 
+ * Und ein bisserl wird hin und her gerundet, das liegt in der 
+ * Verantwortung von Intl.NumberFormat
  */
 @Pipe({
   name: 'fileSize'
@@ -21,6 +26,7 @@ export class FileSizePipe implements PipeTransform {
     maximumFractionDigits: 2,
     minimumFractionDigits: 2,
   });
+
   /**
    *
    * @param value
@@ -29,7 +35,7 @@ export class FileSizePipe implements PipeTransform {
   transform(value: number): string {
 
     let idx = 0;
-    while (value > 1024) {
+    while (value > 1024 && idx < this.units.length) {
 
       value /= 1024;
       idx++;

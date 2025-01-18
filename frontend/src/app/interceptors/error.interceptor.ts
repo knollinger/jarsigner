@@ -9,12 +9,12 @@ import { Router } from '@angular/router';
  * Der Error-Interceptor springt bei allen HttpErrorResponses an und zeigt
  * einen Fehler mittels des **MessageBoxService** an. 
  * 
- * Wenn im Bodx ein JSON-Objekt mit der eigenschafft "message" geliefert wird, 
+ * Wenn im Body ein JSON-Objekt mit der eigenschafft "message" geliefert wird, 
  * so wird diese angezeigt. Anderenfalls generiert der Interceptor eine mehr
  * oder weniger schöne Meldung mit dem HTTP-Statuscode.
  * 
  * Sollte der HTTP-Status auf eine fehlende Authentifizierung hin weisen (HTTP 401)
- * sor wird auf die Login-Page redirected.
+ * so wird auf die Login-Page redirected.
  * 
  * Keinesfalls kommt die Error-Situation beim Aufrufer des Angular-HTTPClients an. 
  * Dort kann also immer vom alles-ist-prima-Fall ausgegangen werden. Im Fall des
@@ -65,6 +65,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     if (err.message && err.error.message) {
       return err.error.message;
     }
+
     if (err.status === 0) {
       return 'Die Verbindung mit dem Server konnte nicht hergestellt werden.';
     }

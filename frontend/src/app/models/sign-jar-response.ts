@@ -1,23 +1,41 @@
+/**
+ * Definiere das JSON um einen einzelnen Signatur-Fehler 
+ * für ein JAR zu beschreiben
+ */
 export interface IJarError {
     jarName: string,
     error: string
 }
 
+/**
+ * Der JAR-Signatur-Fehler als TS-Objekt
+ */
 export class JarError {
 
+    /**
+     * 
+     * @param jarName 
+     * @param error 
+     */
     constructor(
         public readonly jarName: string,
         public readonly error: string) {
 
     }
 
+    /**
+     * Transferiere ein JSON mit einer IJarError-Signatur in ein JsrError-Objekt
+     * 
+     * @param json 
+     * @returns 
+     */
     public static fromJSON(json: IJarError): JarError {
         return new JarError(json.jarName, json.error);
     }
 }
 
 /**
- * 
+ * Definiert die JSON-Response eines SignJar-API-Aufrufs
  */
 export interface ISignJarsResponse {
     taskId: string
@@ -25,13 +43,14 @@ export interface ISignJarsResponse {
 }
 
 /**
- * 
+ * Die SignJarResponse als TS-Objekt
  */
 export class SignJarsResponse {
 
     /**
      * 
      * @param taskId 
+     * @param jarErrors 
      */
     constructor(
         public readonly taskId: string,
@@ -40,6 +59,8 @@ export class SignJarsResponse {
     }
 
     /**
+     * Transferiere ein JSON mit der ISignJarsResponse-Signatur
+     * in ein SignJarsResponse-Objekt.
      * 
      * @param json 
      * @returns 
