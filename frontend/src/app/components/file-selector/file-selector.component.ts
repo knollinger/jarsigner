@@ -1,6 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatSelectionListChange } from '@angular/material/list';
 
+import { MessageBoxService } from '../../services/message-box.service';
+
 @Component({
   selector: 'app-file-selector',
   templateUrl: './file-selector.component.html',
@@ -17,8 +19,8 @@ export class FileSelectorComponent implements OnInit {
   /**
    * 
    */
-  constructor() { 
-
+  constructor(
+    private msgBoxSvc: MessageBoxService) {
   }
 
   /**
@@ -34,7 +36,7 @@ export class FileSelectorComponent implements OnInit {
   onFilesSelected(evt: any) {
 
     if (evt.target && evt.target.files) {
-      this.fillFiles(evt.target.files);
+      this.addFiles(evt.target.files);
     }
   }
 
@@ -43,62 +45,86 @@ export class FileSelectorComponent implements OnInit {
    * @param evt 
    */
   onFilesDropped(file: File[]) {
-    this.fillFiles(file);
+    this.addFiles(file);
   }
 
   /**
    * 
    * @param files 
    */
-  private fillFiles(files: File[] | FileList) {
+  private addFiles(files: File[]) {
 
-    const result = new Array<File>(0);
-    for (let i = 0; i < files.length; ++i) {
-      result.push(files[i]);
+    const all = this.files.concat(files);
+    const unique = this.makeUnique(all);
+    if (this.checkFileTypes(unique)) {
+      this.files = unique;
+      this.selected.emit(this.files);
     }
-    const all = this.files.concat(result);
-    this.files = this.makeUnique(all);
-    this.selectedFiles = new Set<string>();
-    this.selected.emit(this.files);
   }
 
-   /**
-   * 
+  /**
+  * Teste den MimeType der Files und liefere alle Files, 
+  * welche kein JAR sind.
+  * 
+  * @param files Alle zu testenden Files
+  * @returns true, wenn alles ok ist, sonst false
+  */
+  private checkFileTypes(files: File[]): boolean {
+
+    const wrongFiles = files.filter(file => {
+      return file.type !== 'application/java-archive';
+    });
+
+    const result = wrongFiles.length === 0;
+    if (!result) {
+
+      let msg = 'Die folgenden Dateien sind keine JAR-Archive und können somit nicht signiert werden: <ul>';
+      wrongFiles.forEach(file => {
+        msg += `<li>${file.name}</li>`;
+      })
+      msg += '</ul>Diese Dateien werden ignoriert.';
+
+      this.msgBoxSvc.showErrorBox('Fehlerhafte Datei-Typen', msg);
+    }
+    return result;
+  }
+
+  /**
+   * Soll der SelectAll-Button angezeigt werden? 
    */
-   get isShowSelectAll(): boolean {
+  get isShowSelectAll(): boolean {
 
     return this.files.length !== 0 && this.files.length !== this.selectedFiles.size;
   }
 
   /**
-   * 
+   * Beim klick auf den selectAll-Button werden einfach alle FileNamen
+   * in das Set der selectierten FileNamen aufgenommen.
    */
   onSelectAll() {
-  
-    const selectedFiles = new Set<string>();
+
     this.files.forEach(file => {
-      selectedFiles.add(file.name)
+      this.selectedFiles.add(file.name)
     });
-    this.selectedFiles = selectedFiles;
   }
 
   /**
-   * 
+   * Soll der deselctAll-Button agezeigt werden?
    */
   get isShowDeselectAll(): boolean {
-
     return this.selectedFiles.size !== 0;
   }
 
   /**
-   * 
+   * Beim click auf den DeselectAll-Button wird einfach das Set mit 
+   * den selektierten FileNames gelöscht.
    */
   onDeselectAll() {
-    this.selectedFiles = new Set<string>();
+    this.selectedFiles.clear();
   }
 
   /**
-   * 
+   * Der Callback für einen Change in der List-Auswahl
    * @param evt 
    */
   onSelectionChange(evt: MatSelectionListChange) {
@@ -106,16 +132,14 @@ export class FileSelectorComponent implements OnInit {
     const list = evt.source;
     const model = list.selectedOptions;
 
-    const selectedFiles: Set<string> = new Set<string>();
     model.selected.forEach(option => {
       const file = option.value;
-      selectedFiles.add(file.name);
+      this.selectedFiles.add(file.name);
     })
-    this.selectedFiles = selectedFiles;
   }
 
   /**
-   * 
+   * Ist ein File selektiert ?
    * @param file 
    * @returns 
    */
@@ -125,29 +149,38 @@ export class FileSelectorComponent implements OnInit {
 
 
   /**
-   * 
+   * Soll der DeleteButton agezeigt werden?
    */
   get isShowDelete(): boolean {
 
     return this.selectedFiles.size !== 0;
   }
-  
+
   /**
+   * Bei Klick auf den Delete-Button werden aus der Liste aller
+   * Files dijenigen entfernt welche als selektiert markiert sind.
    * 
+   * Das File selbst wird natürlich nicht gelöscht, nur aus der
+   * Liste entfernt.
    */
   onDelete() {
 
     this.files = this.files.filter(file => {
       const result = this.selectedFiles.has(file.name);
-      if(result) {
+      if (result) {
         this.selectedFiles.delete(file.name);
-      } 
+      }
       return !result;
     })
+    this.selectedFiles.clear();
     this.selected.emit(this.files);
   }
- 
+
   /**
+   * Mache ein Array von Files unique. Dazu wird über das
+   * Array iteriert. Für jedes File wird geprüft ob ein 
+   * File mit diesem Namen bereits gefunden wurde. Wenn 
+   * ja, wird es für die neue Liste ignoriert.
    * 
    * @param files 
    * @returns 
@@ -155,11 +188,10 @@ export class FileSelectorComponent implements OnInit {
   private makeUnique(files: File[]): File[] {
 
     const seen: Set<string> = new Set<string>();
-    return  files.filter(file => {
-      console.log('check ' + file.name);
+    return files.filter(file => {
 
       const result = !seen.has(file.name);
-      if(result) {
+      if (result) {
         seen.add(file.name);
       }
       return result;

@@ -25,7 +25,14 @@
 
     <div class="scrollable flex-1" appDropTarget (filesDropped)="onFilesDropped($event)">
 
-        <div class="empty-label" *ngIf="files.length === 0">Drop files here</div>
+        <div class="empty-labels" *ngIf="files.length === 0">
+            <div class="drop-label">JAR-Files hier ablegen.</div>
+            <div class="select-label">
+                <span>Oder mittels </span>
+                <mat-icon class="material-symbols-outlined">attach_file_add</mat-icon>
+                <span> hinzu fügen.</span>
+            </div>
+        </div>
 
         <mat-selection-list *ngIf="files.length > 0" (selectionChange)="onSelectionChange($event)">
             <mat-list-option color="primary" checkboxPosition="before" *ngFor="let file of files" [value]="file" [selected]="isSelected(file)">

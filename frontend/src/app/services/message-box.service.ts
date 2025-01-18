@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { MessageBoxComponent } from '../components/message-box/message-box.component';
 import { MatDialog } from '@angular/material/dialog';
+
+import { MessageBoxComponent } from '../components/message-box/message-box.component';
 
 /**
  * Zeigt einen MessageBox-Dialog in den verschiedenen Ausprägungen an.
@@ -55,7 +56,8 @@ export class MessageBoxService {
   }
 
   /**
-   *
+   * Zeige eine Messagebox mit den gegebenen Daten an.
+   * 
    * @param msgTitle
    * @param msg
    * @param type

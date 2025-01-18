@@ -11,12 +11,24 @@
     color: #333;
 }
 
-.empty-label {
+.empty-labels {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: xxx-large;
-    color: #d0d0d0;
+    color: #c0c0c0;
     white-space: nowrap;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.drop-label {
+    font-size: xx-large;
+}
+
+.select-label {
+    display: inline-block;
+    align-items: center;
+    margin-top: 2rem;
 }
