@@ -5,5 +5,11 @@ form {
     left: 50%;
     top: 5rem;
     transform: translateX(-50%);
+}
 
+.content {
+    padding: 1rem;
+    border: 0 1px 1px 1px;
+    border-color: #d0d0d0;
+    border-style: solid;;
 }

@@ -5,6 +5,9 @@ import { SessionService } from '../services/session.service';
 /**
  * Ein Guard, welcher entsprechend konfigurierte Routen nur
  * dann aktiviert, wenn ein Login vor liegt.
+ * 
+ * Die Existenz eines Logins wird durch das vorhandensein 
+ * eines Tokens im SessionService definiert.
  */
 @Injectable({
   providedIn: 'root'

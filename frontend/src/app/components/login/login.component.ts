@@ -56,8 +56,7 @@ export class LoginComponent implements OnInit {
   onSubmit() {
 
     const req = LoginRequest.fromJSON(this.loginForm.value);
-    this.sessionSvc.login(req).subscribe(x => {
-      console.log(x);
+    this.sessionSvc.login(req).subscribe(() => {
       this.router.navigateByUrl(this.redirUrl);
     })
   }

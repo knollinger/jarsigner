@@ -36,7 +36,13 @@ export class FileSelectorComponent implements OnInit {
   onFilesSelected(evt: any) {
 
     if (evt.target && evt.target.files) {
-      this.addFiles(evt.target.files);
+      // this.addFiles(evt.target.files); // ist ne FileList!!!
+
+      const files = new Array<File>(0);
+      for (let i = 0; i < evt.target.files.length; ++i) {
+        files.push(evt.target.files[i]);
+      }
+      this.addFiles(files);
     }
   }
 

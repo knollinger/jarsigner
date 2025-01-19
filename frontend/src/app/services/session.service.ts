@@ -50,6 +50,7 @@ export class SessionService {
      */
     public set token(token: string | null) {
 
+        console.log(`set new token '${token}'`)
         this.currentToken = token;
     }
 

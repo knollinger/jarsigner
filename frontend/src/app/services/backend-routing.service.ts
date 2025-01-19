@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 /**
- * Löst die Routen zum Backend auf
+ * Löst die Routen zum Backend auf. F
  */
 @Injectable({
   providedIn: 'root'
@@ -28,7 +28,7 @@ export class BackendRoutingService {
    * Die Placeholder sind in der Form {index-in-das-arg-array} zu annotieren, 
    * der Index ist hierbei 1-basierend! 
    * 
-   * Also {1} meinst also den ersten Parameter im args-array, {2} den 
+   * {1} meinst also den ersten Parameter im args-array, {2} den 
    * zweiten...
    * 
    * Die Basis-URL des Requests wird von der aktuellen Lokation der AngularUI
@@ -51,7 +51,7 @@ export class BackendRoutingService {
    */
   public getRouteForName(
     name: string,
-    routes: Map<string, string>, 
+    routes: Map<string, string>,
     ...args: any[]): string {
 
     let path = routes.get(name);
@@ -59,10 +59,10 @@ export class BackendRoutingService {
       throw new Error(`no route for ${name} found`);
     }
 
-    for(let i = 0; i < args.length; ++i){
-      const match=`{${i + 1}}`;
+    for (let i = 0; i < args.length; ++i) {
+      const match = `{${i + 1}}`;
       path = path.replace(match, encodeURIComponent(args[i].toString()));
     }
-    return this.baseAddress + path;
+    return this.baseAddress + encodeURI(path);
   }
 }
