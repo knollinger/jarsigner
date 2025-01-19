@@ -30,13 +30,23 @@ export class FileSelectorComponent implements OnInit {
   }
 
   /**
+   * Wenn per HTML5-FileSelector ein oder mehrere Files ausgewählt
+   * wurden.
+   * 
+   * Das <input type='file'> liefert dummerweise eine FileList.
+   * Diese ist zwar einem Array gar nicht so unähnlich, aber
+   * einiges geht halt doch nicht.
+   * 
+   * Ergo wird die FileList hier in ein File[] konvertiert, danach
+   * kann einfach via **addFiles** die normale Verarbeitung weiter 
+   * gehen.
    * 
    * @param evt 
    */
   onFilesSelected(evt: any) {
 
+    console.log(evt);
     if (evt.target && evt.target.files) {
-      // this.addFiles(evt.target.files); // ist ne FileList!!!
 
       const files = new Array<File>(0);
       for (let i = 0; i < evt.target.files.length; ++i) {
@@ -47,11 +57,17 @@ export class FileSelectorComponent implements OnInit {
   }
 
   /**
+   * Wenn ein oder mehreree Files per drag&drop auf den selector 
+   * fallen gelassen wurden...
    * 
-   * @param evt 
+   * Ausgelöst wird das Event durch die appDropTarget-Direktive. 
+   * Diese abstrahiert den ganten DnD-Käse und emittiert beim
+   * Drop ein Array mit den Files.
+   *  
+   * @param files
    */
-  onFilesDropped(file: File[]) {
-    this.addFiles(file);
+  onFilesDropped(files: File[]) {
+    this.addFiles(files);
   }
 
   /**
@@ -69,10 +85,12 @@ export class FileSelectorComponent implements OnInit {
   }
 
   /**
-  * Teste den MimeType der Files und liefere alle Files, 
-  * welche kein JAR sind.
+  * Teste den MimeType der Files. Sollten Files gefunden
+  * werden welche kein JAR sind, so wird eine MessageBox 
+  * angezeigt.
   * 
   * @param files Alle zu testenden Files
+  * 
   * @returns true, wenn alles ok ist, sonst false
   */
   private checkFileTypes(files: File[]): boolean {
