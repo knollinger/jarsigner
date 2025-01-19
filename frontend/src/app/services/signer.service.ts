@@ -19,7 +19,7 @@ export class SignerService {
   private static routes: Map<string, string> = new Map<string, string>(
     [
       ['signJars', 'v1/signer'],
-      ['downloadResult', 'v1/signer/{1}']
+      ['downloadResult', 'v1/signer/{1}?archiveName={2}']
     ]
   );
 
@@ -44,9 +44,9 @@ export class SignerService {
    * 
    * @returns Die Download-URL
    */
-  public getTaskResultUrl(taskId: string): string {
+  public getTaskResultUrl(taskId: string, archiveName: string): string {
 
-    return this.backendRouter.getRouteForName('downloadResult', SignerService.routes, taskId);
+    return this.backendRouter.getRouteForName('downloadResult', SignerService.routes, taskId, archiveName);
   }
 
   /**

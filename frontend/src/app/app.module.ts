@@ -27,8 +27,9 @@ import { MessageBoxComponent } from './components/message-box/message-box.compon
 
 import { SpinnerInterceptor } from './interceptors/spinner.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
-import { LoginComponent } from './components/login/login.component';
 import { AutoFocusDirective } from './directives/auto-focus.directive';
+import { LoginComponent } from './components/login/login.component';
+import { InputDialogComponent } from './components/input-dialog/input-dialog.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { AutoFocusDirective } from './directives/auto-focus.directive';
     MessageBoxComponent,
     LoginComponent,
     AutoFocusDirective,
+    InputDialogComponent,
   ],
   imports: [
     BrowserModule,

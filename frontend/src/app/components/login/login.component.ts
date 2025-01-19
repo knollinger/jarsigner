@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { ILoginRequest, LoginRequest } from '../../models/login.request';
+import { LoginRequest } from '../../models/login.request';
 import { SessionService } from '../../services/session.service';
 import { TitlebarService } from '../../services/titlebar.service';
 

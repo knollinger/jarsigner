@@ -47,7 +47,8 @@ public class SignerController
      * Signiere die JAR-Files und liefere die Referenz auf das tempDirectory mit den Files zurück
      */
     @PutMapping()
-    public SignerResponseDTO signJarFiles(@RequestParam(name = "file") MultipartFile[] files)
+    public SignerResponseDTO signJarFiles(
+        @RequestParam(name = "file") MultipartFile[] files)
     {
         try
         {
@@ -70,10 +71,13 @@ public class SignerController
 
     /**
      * @param taskId
+     * @param archiveName
      * @return
      */
     @GetMapping(path = "/{taskId}")
-    public ResponseEntity<InputStreamResource> getTaskResult(@PathVariable(name = "taskId") UUID taskId)
+    public ResponseEntity<InputStreamResource> getTaskResult(
+        @PathVariable(name = "taskId") UUID taskId,
+        @RequestParam(name="archiveName") String archiveName)
     {
         File result = this.filesSvc.getArchive(taskId);
         if (result == null || !result.exists())
@@ -87,7 +91,7 @@ public class SignerController
             HttpHeaders headers = new HttpHeaders();
             headers.add(HttpHeaders.CONTENT_TYPE, "application/zip");
             
-            String contentDisp = String.format("attachment; filename=%1$s", result.getName());
+            String contentDisp = String.format("attachment; filename=%1$s", composeArchiveName(archiveName));
             headers.add(HttpHeaders.CONTENT_DISPOSITION, contentDisp);
             
             InputStream in = new FileDeletingInputStream(result);
@@ -98,5 +102,10 @@ public class SignerController
             String msg = String.format(ERR_LOAD_TASK, taskId.toString());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, msg, e);
         }
+    }
+    
+    private String composeArchiveName(String name) {
+        
+        return name.toLowerCase().endsWith(".zip") ? name : name + ".zip";
     }
 }

@@ -3,6 +3,7 @@ import { SignerService } from '../../services/signer.service';
 import { TitlebarService } from '../../services/titlebar.service';
 import { MessageBoxService } from '../../services/message-box.service';
 import { JarError } from '../../models/sign-jar-response';
+import { InputDialogService } from '../../services/input-dialog.service';
 
 @Component({
   selector: 'app-signer',
@@ -19,7 +20,8 @@ export class SignerComponent implements OnInit {
   constructor(
     private signerSvc: SignerService,
     private titlebarSvc: TitlebarService,
-    private msgBoxSvc: MessageBoxService) { 
+    private msgBoxSvc: MessageBoxService,
+    private inputDlgSvc: InputDialogService) {
 
   }
 
@@ -49,18 +51,24 @@ export class SignerComponent implements OnInit {
    */
   onSignJars(link: HTMLElement) {
 
-    this.signerSvc.signFiles(this.files).subscribe(rsp => {
+    const title = 'Archiv-Name';
+    const label = 'Archiv-Name';
+    this.inputDlgSvc.showInputDialog(title, label).subscribe(archiveName => {
 
-      if (rsp.jarErrors.length) {
-        this.showErrors(rsp.jarErrors);
-      }
-      else {
-        this.downloadUrl = this.signerSvc.getTaskResultUrl(rsp.taskId);
+      if (archiveName) {
 
-        // 
-        window.setTimeout(() => {
-          link.click();
-        }, 1);
+        this.signerSvc.signFiles(this.files).subscribe(rsp => {
+
+          if (rsp.jarErrors.length) {
+            this.showErrors(rsp.jarErrors);
+          }
+          else {
+            this.downloadUrl = this.signerSvc.getTaskResultUrl(rsp.taskId, archiveName);
+            window.setTimeout(() => {
+              link.click();
+            }, 1);
+          }
+        });
       }
     });
   }
