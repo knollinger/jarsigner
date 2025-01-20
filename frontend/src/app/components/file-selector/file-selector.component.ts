@@ -156,6 +156,7 @@ export class FileSelectorComponent implements OnInit {
     const list = evt.source;
     const model = list.selectedOptions;
 
+    this.selectedFiles.clear();
     model.selected.forEach(option => {
       const file = option.value;
       this.selectedFiles.add(file.name);
